@@ -2,7 +2,7 @@ services:
   
   web:
 
-      image: nginx:latest
+      image: postgres:latest
 
       ports:
 
