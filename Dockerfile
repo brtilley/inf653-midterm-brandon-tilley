@@ -10,7 +10,7 @@ COPY . /var/www.html
 
 RUN docker-php-ext-install pdo_pgsql
 
-COPY apache.conf /etc/apache2/sites-available/000-default.conf
+# COPY apache.conf /etc/apache2/sites-available/000-default.conf
 
 RUN a2enmod rewrite
 # RUN echo "Listen 0.0.0.0:80" >> /etc/apache2/apache2.conf
