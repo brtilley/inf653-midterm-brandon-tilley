@@ -4,7 +4,7 @@ services:
   php-apache:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: C:\xampp\htdocs\inf653midtermproject\PHP-Docker\Dockerfile
     ports:
       - "80:80"
     volumes:
