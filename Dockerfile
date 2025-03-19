@@ -5,6 +5,5 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /var/www/html
 COPY . /var/www/html
 RUN docker-php-ext-install pdo_pgsql
-COPY apache.conf /etc/apache2/sites-available/000-default.conf
 RUN a2enmod rewrite
 EXPOSE 80
