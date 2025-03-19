@@ -1,5 +1,8 @@
 <?php 
   class Quote {
+
+    include_once 'config/Database.php';
+
     // DB stuff
     private $conn;
     private $table = 'quotes';
