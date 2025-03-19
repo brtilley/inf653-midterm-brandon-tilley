@@ -9,7 +9,7 @@
     <h1>Brandon Tilley - INF653 - Midterm Project</h1>
     <?php
 echo '<pre>';
-print_r(getenv('SITE_URL'));
+print_r(getenv('https://inf653-midterm-brandon-tilley.onrender.com/'));
 echo '<br>';
 print_r($_SERVER);
 echo '</pre>';
