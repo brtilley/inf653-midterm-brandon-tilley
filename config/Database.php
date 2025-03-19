@@ -27,12 +27,12 @@
     } 
     */
     class Database {
-      private $conn;
       private $host;
       private $port;
       private $dbname;
       private $username;
       private $password;
+      private $conn;
 
       public function __construct() {
         $this->username = getenv('USERNAME');
