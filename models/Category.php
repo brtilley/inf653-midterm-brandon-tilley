@@ -1,7 +1,9 @@
 <?php
+
+  include_once 'config/Database.php';
+
   class Category {
 
-    include_once 'config/Database.php';
 
     // DB Stuff
     private $conn;

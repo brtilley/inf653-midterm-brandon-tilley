@@ -1,7 +1,8 @@
 <?php 
-  class Quote {
-
+    
     include_once 'config/Database.php';
+
+    class Quote {
 
     // DB stuff
     private $conn;
