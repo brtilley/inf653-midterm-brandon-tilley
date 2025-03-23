@@ -1,5 +1,7 @@
 
-<?php declare(strict_types = 1);
+<?php declare(strict_types = 1); ?>
+
+<?php
 
 echo '<pre>';
 print_r(getenv('SITE_URL'));
