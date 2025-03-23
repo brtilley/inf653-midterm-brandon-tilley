@@ -1,4 +1,3 @@
-<h1>Brandon Tilley - INF653 - Midterm Project</h1>
 
 <?php
 
@@ -11,3 +10,7 @@ print_r($_SERVER);
 echo '</pre>';
 
 phpinfo();
+
+?>
+
+<h1>Brandon Tilley - INF653 - Midterm Project</h1>
