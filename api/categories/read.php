@@ -44,6 +44,6 @@
   } else {
         // No Category
         echo json_encode(
-          array('message' => 'No Categories Found')
+          array('message' => "$id Not Found")
         );
   }
