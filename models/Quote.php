@@ -24,7 +24,7 @@
     // Get Quotes
     public function read() {
       // Create query
-      $query = 'SELECT q.id, q.quote, a.author, c.category
+      $query = 'SELECT q.id, q.quote, a.author, c.category, q.category_id, q.author_id
                                 FROM quotes q
                                 LEFT JOIN
                                   authors a ON q.author_id = a.id
@@ -43,7 +43,7 @@
     // Get Single Quote
     public function read_single() {
           // Create query
-          $query = 'SELECT q.id, q.quote, a.author, c.category
+          $query = 'SELECT q.id, q.quote, a.author, c.category, q.category_id, q.author_id
           FROM quotes q
           LEFT JOIN
             authors a ON q.author_id = a.id
@@ -68,6 +68,8 @@
           $this->quote = $row['quote'];
           $this->author = $row['author'];
           $this->category = $row['category'];
+          $this->category_id = $row['category_id'];
+          $this->author_id = $row['author_id'];
     }
 
     // Create Quote
