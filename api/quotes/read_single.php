@@ -10,24 +10,28 @@
   $database = new Database();
   $db = $database->connect();
 
-  // Instantiate quote object
-  $quote = new Quote($db);
+      //Instantiate blog quote object
+      $quo = new Quote($db);
 
-  // Get ID
-  $quote->id = isset($_GET['id']) ? $_GET['id'] : die();
-
-  // Get quote
-  $quote->read_single();
-
-  // Create array
-  $quote_arr = array(
-    'id' => $quote->id,
-    'quote' => $quote->quote,
- //   'author_id' => $quote->author_id,
-    'author' => $quote->author,
- //   'category_id' => $quote->category_id,
-    'category' => $quote->category
-  );
-
-  // Make JSON
-  print_r(json_encode($quote_arr));
+      //GET ID
+      $quo->id = isset($_GET['id']) ? $_GET['id'] : die();// gets the value of that id
+  
+      //GET quote
+      if ($quo->read_single()){
+  
+      //create array
+          $quote_arr = array(
+              'id' => $quo->id,
+              'quote' => $quo->quote,
+              'author' => $quo->author,
+              'category' => $quo->category
+  
+          );
+      } else {
+          $quote_arr = array(
+              'message' => 'No Quotes Found'
+          );
+      }
+  
+      //Make JSON
+      print_r(json_encode($quote_arr));

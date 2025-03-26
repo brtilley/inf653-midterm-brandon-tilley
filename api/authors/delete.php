@@ -11,22 +11,18 @@
   $database = new Database();
   $db = $database->connect();
 
-  // Instantiate blog post object
-  $author = new Author($db);
+  //Instantiate blog Author object
+  $aut = new Author($db);
 
-  // Get raw posted data
+  //Get the raw posted data
   $data = json_decode(file_get_contents("php://input"));
 
-  // Set ID to UPDATE
-  $author->id = $data->id;
-
-  // Delete post
-  if($author->delete()) {
-    echo json_encode(
-      array('message' => 'Author deleted')
-    );
-  } else {
-    echo json_encode(
-      array('message' => 'Author not deleted')
-    );
+  //data is not set
+  if(!isset($data->id)){
+      echo(json_encode(array('message' => 'Missing Required Parameters')));
+      exit();
+  } else { //else delete
+      $aut->id = $data->id;
+      $aut->delete();
+      echo(json_encode(array('id' => $aut->id)));
   }

@@ -11,24 +11,31 @@
   $database = new Database();
   $db = $database->connect();
 
-  // Instantiate blog post object
-  $author = new Author($db);
+  //Instantiate blog quote object
+  $aut = new Author($db);
 
-  // Get raw posted data
+  //Get the raw posted data
   $data = json_decode(file_get_contents("php://input"));
 
-  // Set ID to UPDATE
-  $author->id = $data->id;
+  //data is not set
+  if(!isset($data->id) || !isset($data->author)){
+      echo json_encode(array('message' => 'Missing Required Parameters'));
+      exit();
+  }
+  //SET ID TO UPDATE
+  $aut->id = $data->id;
+  $aut->author = $data->author;
 
-  $author->author = $data->author;
-
-  // Update post
-  if($author->update()) {
-    echo json_encode(
-      array('message' => 'Author updated')
-    );
+  //update author
+  if($aut->update()){
+      echo json_encode(
+          array(
+              'id' => $aut->id,
+              'author' => $aut->author
+      ));
   } else {
-    echo json_encode(
-      array('message' => 'Author not updated')
-    );
+      echo json_encode(
+          array(
+              'message' => 'author_id Not Found'
+      ));
   }

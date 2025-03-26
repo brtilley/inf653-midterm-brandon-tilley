@@ -11,22 +11,23 @@
   $database = new Database();
   $db = $database->connect();
 
-  // Instantiate blog post object
-  $category = new Category($db);
+  //Instantiate DB and CONNECT
+  $database = new Database();
+  $db = $database->connect();
 
-  // Get raw posted data
+
+  //Instantiate blog category object
+  $cat = new Category($db);
+
+  //Get the raw posted data
   $data = json_decode(file_get_contents("php://input"));
 
-  // Set ID to UPDATE
-  $category->id = $data->id;
-
-  // Delete post
-  if($category->delete()) {
-    echo json_encode(
-      array('message' => 'Category deleted')
-    );
-  } else {
-    echo json_encode(
-      array('message' => 'Category not deleted')
-    );
+  //data is not set
+  if(!isset($data->id)){
+      echo(json_encode(array('message' => 'Missing Required Parameters')));
+      exit();
+  } else { //else delete
+      $cat->id = $data->id;
+      $cat->delete();
+      echo(json_encode(array('id' => $cat->id)));
   }

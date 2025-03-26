@@ -11,22 +11,22 @@
   $database = new Database();
   $db = $database->connect();
 
-  // Instantiate Category object
-  $category = new Category($db);
+   //Instantiate blog category object
+   $cat = new Category($db);
 
-  // Get ID
-  $category->id = isset($_GET['id']) ? $_GET['id'] : die();
+   //GET ID
+   $cat->id = isset($_GET['id']) ? $_GET['id'] : die();// gets the value of that id
 
-    //GET category
-    if( $cat->read_single()){
-      echo json_encode(array(
-          'id' => $cat->id,
-          'category' => $cat->category
-      ));
- }
+   //GET category
+  if( $cat->read_single()){
+       echo json_encode(array(
+           'id' => $cat->id,
+           'category' => $cat->category
+       ));
+  }
 //cannot find id
- else {
-  echo json_encode(array(
-      'message' => 'category_id Not Found'
-  ));
- }
+  else {
+   echo json_encode(array(
+       'message' => 'category_id Not Found'
+   ));
+  }

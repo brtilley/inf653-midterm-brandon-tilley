@@ -12,21 +12,20 @@
   $database = new Database();
   $db = $database->connect();
 
-  // Instantiate blog post object
-  $author = new Author($db);
+  //Instantiate blog quote object
+  $aut = new Author($db);
 
-  // Get raw posted data
+  //Get the raw posted data
   $data = json_decode(file_get_contents("php://input"));
 
-  $author->author = $data->author;
-
-  // Create Author
-  if($author->create()) {
-    echo json_encode(
-      array('message' => 'Author Created')
-    );
+  //if data is not all set, send error message and exit
+  if ( !isset($data->author) )
+  {
+      echo json_encode(array('message' => 'Missing Required Parameters'));
+      exit();
   } else {
-    echo json_encode(
-      array('message' => 'Author Not Created')
-    );
+      $aut->author = $data->author;
+      $aut->create();
+      echo json_encode(array('id' => $db->lastInsertId(), 'author'=>$aut->author));
+
   }

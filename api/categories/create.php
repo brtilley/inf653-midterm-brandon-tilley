@@ -12,21 +12,19 @@
   $database = new Database();
   $db = $database->connect();
 
-  // Instantiate blog post object
-  $category = new Category($db);
+  //Instantiate blog quote object
+  $cat = new Category($db);
 
-  // Get raw posted data
+  //Get the raw posted data
   $data = json_decode(file_get_contents("php://input"));
 
-  $category->category = $data->category;
-
-  // Create Category
-  if($category->create()) {
-    echo json_encode(
-      array('message' => 'Category Created')
-    );
+  //if data is not all set, send error message and exit
+  if ( !isset($data->category) )
+  {
+      echo json_encode(array('message' => 'Missing Required Parameters'));
   } else {
-    echo json_encode(
-      array('message' => 'Category Not Created')
-    );
+      $cat->category = $data->category;
+      $cat->create();
+      echo json_encode(array('id' => $db->lastInsertId(), 'category'=>$cat->category));
+
   }

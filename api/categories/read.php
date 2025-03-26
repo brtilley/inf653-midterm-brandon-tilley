@@ -11,39 +11,37 @@
   $database = new Database();
   $db = $database->connect();
 
-  // Instantiate Category object
-  $category = new Category($db);
+  //Instantiate blog category object
+  $cat = new Category($db);
 
-  // Category read query
-  $result = $category->read();
-  
-  // Get row count
+  //Blog category query
+  $result = $cat->read();
+
+  //Get row count
   $num = $result->rowCount();
 
-  // Check if any categories
-  if($num > 0) {
-        // Category array
-        $category = array();
-        $category_arr['data'] = array();
+  //Check if any categories
+  if($num>0){
+      // cat array
+      $category_arr = array();
 
-        while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+      while($row = $result->fetch(PDO::FETCH_ASSOC)){
           extract($row);
 
           $category_item = array(
-            'id' => $id,
-            'category' => $category
+              'id' => $id,
+              'category' => $category
           );
 
-          // Push to "data"
-          array_push($category_arr['data'], $category_item);
-        }
+          //push to "data
+          array_push($category_arr, $category_item);
+      }
 
-        // Turn to JSON & output
-        echo json_encode($category_arr);
-
+      //Turn to JSON & output
+      echo json_encode($category_arr);
   } else {
-        // No Category
-        echo json_encode(
-          array('message' => "$id Not Found")
-        );
+      //NO category
+      echo json_encode(
+          array('message' => 'category_id Not Found')
+      );
   }
