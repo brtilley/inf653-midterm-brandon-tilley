@@ -25,7 +25,7 @@
     //if data is not all set, send error message and exit
     if ( !isset($data->quote) || !isset($data->author_id) || !isset($data->category_id))
     {
-        echo json_encode(array('message' => 'Missing Required Parameters'));
+        echo json_encode(array('message' => 'No Quote Found'));
         exit();
     }
     
