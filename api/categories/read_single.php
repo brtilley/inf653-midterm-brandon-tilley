@@ -17,14 +17,16 @@
   // Get ID
   $category->id = isset($_GET['id']) ? $_GET['id'] : die();
 
-  // Get post
-  $category->read_single();
-
-  // Create array
-  $category_arr = array(
-    'id' => $category->id,
-    'category' => $category->category
-  );
-
-  // Make JSON
-  print_r(json_encode($category_arr));
+    //GET category
+    if( $cat->read_single()){
+      echo json_encode(array(
+          'id' => $cat->id,
+          'category' => $cat->category
+      ));
+ }
+//cannot find id
+ else {
+  echo json_encode(array(
+      'message' => 'category_id Not Found'
+  ));
+ }
