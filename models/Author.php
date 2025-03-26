@@ -48,8 +48,10 @@
       //Prepare statement
       $stmt = $this->conn->prepare($query);
 
+      $this->id = htmlspecialchars(strip_tags($this->id));
+
       // Bind ID
-      $stmt->bindParam(1, $this->id);
+      $stmt->bindParam(':id', $this->id);
 
       // Execute query
       $stmt->execute();
