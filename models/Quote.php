@@ -24,16 +24,50 @@
     // Get Quotes
     public function read() {
       // Create query
-      $query = 'SELECT q.id, q.quote, a.author, c.category, q.category_id, q.author_id
+      if (isset($this->author_id) && isset($this->category_id)){
+      $query = 'SELECT q.id, q.quote, a.author as author, c.category as category
                                 FROM quotes q
-                                LEFT JOIN
+                                INNER JOIN
                                   authors a ON q.author_id = a.id
-                                LEFT JOIN
+                                INNER JOIN
+                                  categories c ON q.category_id = c.id
+                                WHERE
+                                  a.id = :author_id AND c.id = :category_id';
+      } else if (isset($this->author_id)){
+      $query = 'SELECT q.id, q.quote, a.author as author, c.category as category
+                                FROM quotes q
+                                INNER JOIN
+                                  authors a ON q.author_id = a.id
+                                INNER JOIN
+                                  categories c ON q.category_id = c.id
+                                WHERE
+                                  a.id = :author_id';
+      } else if (isset($this->category_id)){
+      $query = 'SELECT q.id, q.quote, a.author as author, c.category as category
+                                FROM quotes q
+                                INNER JOIN
+                                  authors a ON q.author_id = a.id
+                                INNER JOIN
+                                  categories c ON q.category_id = c.id
+                                WHERE
+                                  c.id = :category_id';
+      } else {
+      $query = 'SELECT q.id, q.quote, a.author as author, c.category as category
+                                FROM quotes q
+                                INNER JOIN
+                                  authors a ON q.author_id = a.id
+                                INNER JOIN
                                   categories c ON q.category_id = c.id';
+      }
       
       // Prepare statement
       $stmt = $this->conn->prepare($query);
-
+      if($this->author_id){
+        $stmt->bindParam(':author_id', $this->author_id);
+      }
+      if($this->category_id){
+        $stmt->bindParam(':category_id', $this->category_id);
+      }
       // Execute query
       $stmt->execute();
 
@@ -43,20 +77,20 @@
     // Get Single Quote
     public function read_single() {
           // Create query
-          $query = 'SELECT q.id, q.quote, a.author, c.category
+          $query = 'SELECT q.id, q.quote, a.author as author, c.category as category
           FROM quotes q
-          LEFT JOIN
+          INNER JOIN
             authors a ON q.author_id = a.id
-          LEFT JOIN
+          INNER JOIN
             categories c ON q.category_id = c.id
-          WHERE q.id = ?
+          WHERE q.id = :id
           LIMIT 1';
 
           // Prepare statement
           $stmt = $this->conn->prepare($query);
 
           // Bind ID
-          $stmt->bindParam(1, $this->id);
+          $stmt->bindParam(':id', $this->id);
 
           // Execute query
           $stmt->execute();
@@ -64,12 +98,17 @@
           $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
           // Set properties
+          if($row){
           $this->id = $row['id'];
           $this->quote = $row['quote'];
           $this->author = $row['author'];
           $this->category = $row['category'];
    //       $this->category_id = $row['category_id'];
    //       $this->author_id = $row['author_id'];
+          return true;
+    } else {
+          return false;
+    }
     }
 
     // Create Quote
