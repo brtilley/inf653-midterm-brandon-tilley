@@ -42,7 +42,7 @@
           id,
           author
         FROM authors
-      WHERE id = ?
+      WHERE id = :id
       LIMIT 1';
 
       //Prepare statement
@@ -91,8 +91,8 @@
   // Update Author
   public function update() {
     // Create Query
-    $query = 'UPDATE ' .
-      $this->table . '
+    $query = 'UPDATE         
+    FROM authors
     SET
       author = :author
       WHERE

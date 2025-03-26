@@ -143,7 +143,7 @@
     // Update Quote
     public function update() {
           // Create query
-          $query = 'UPDATE quotes
+          $query = 'UPDATE FROM quotes
           SET quote = :quote, author_id = :author_id, category_id = :category_id
                                 WHERE id = :id';
 

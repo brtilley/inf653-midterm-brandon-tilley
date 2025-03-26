@@ -89,8 +89,8 @@
   // Update Category
   public function update() {
     // Create Query
-    $query = 'UPDATE ' .
-      $this->table . '
+    $query = 'UPDATE
+    FROM categories
     SET
       category = :category
       WHERE
