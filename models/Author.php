@@ -2,146 +2,150 @@
 
   include_once __DIR__ . '/../config/Database.php';
 
-  class Author {
-
-
-    // DB Stuff
+  class Author{
     private $conn;
     private $table = 'authors';
 
-    // Properties
     public $id;
     public $author;
 
-    // Constructor with DB
+    //connection
     public function __construct($db) {
-      $this->conn = $db;
+        $this->conn = $db;
     }
 
-    // Get authors
-    public function read() {
-      // Create query
-      $query = 'SELECT
-        id,
-        author
-      FROM authors';
+    //read function
+    public function read(){
+        //Create query
+        $query = "SELECT
+                    id,
+                    author
+                    FROM ".$this->table."
+                    ORDER BY id ASC";
+        
+        //Prepare statement
+        $stmt = $this->conn->prepare($query);
 
-      // Prepare statement
-      $stmt = $this->conn->prepare($query);
+        //execute
+        $stmt->execute();
 
-      // Execute query
-      $stmt->execute();
-
-      return $stmt;
+        //return statement
+        return $stmt;
     }
 
-    // Get Single Author
-  public function read_single(){
+    public function read_single(){
+        //Create query
+        $query = "SELECT
+                    id,
+                    author
+                    FROM " . $this->table ."
+                    WHERE id = :id
+                    LIMIT 1 OFFSET 0";
+        
+        //prepare statement
+        $stmt= $this->conn->prepare($query);
+
+        //Clean data
+        $this->id = htmlspecialchars(strip_tags($this->id));
+
+        //bind data
+        $stmt->bindParam(':id', $this->id);
+
+        //execute
+        $stmt->execute();
+
+        //retrieve data
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        //Set the data
+        if($row){
+            $this->id = $row['id'];
+            $this->author = $row['author'];
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function create() {
+        //create a category
+        $query = "INSERT INTO " . $this->table ." (author) VALUES (:author)";
+
+        //prepare statement
+        $stmt= $this->conn->prepare($query);
+
+        //clean data
+        $this->author = htmlspecialchars(strip_tags($this->author));
+
+        //bind data
+        $stmt->bindParam(':author', $this->author);
+
+         //execute
+        $stmt->execute();
+
+        if($stmt->execute()){
+            return true;
+        } else {
+            printf("Error: %s. \n", $stmt->error);
+            return false;
+        }
+    }
+
+   //Update Post
+   public function update(){
     // Create query
-    $query = 'SELECT
-          id,
-          author
-        FROM authors
-      WHERE id = :id
-      LIMIT 1';
-
-      //Prepare statement
-      $stmt = $this->conn->prepare($query);
-
-      $this->id = htmlspecialchars(strip_tags($this->id));
-
-      // Bind ID
-      $stmt->bindParam(':id', $this->id);
-
-      // Execute query
-      $stmt->execute();
-
-      $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-      // set properties
-      $this->id = $row['id'];
-      $this->author = $row['author'];
-  }
-
-  // Create Author
-  public function create() {
-    // Create Query
-    $query = 'INSERT INTO authors(author) VALUES (:author)';
-
-  // Prepare Statement
-  $stmt = $this->conn->prepare($query);
-
-  // Clean data
-  $this->author = htmlspecialchars(strip_tags($this->author));
-
-  // Bind data
-  $stmt->bindParam(':author', $this->author);
-
-  // Execute query
-  if($stmt->execute()) {
-    return true;
-  }
-
-  // Print error if something goes wrong
-  printf("Error: $s.\n", $stmt->error);
-
-  return false;
-  }
-
-  // Update Author
-  public function update() {
-    // Create Query
-    $query = 'UPDATE         
-    FROM authors
-    SET
-      author = :author
+    $query = 'UPDATE ' . $this->table . '
+      SET
+        author = :author
       WHERE
-      id = :id';
+        id = :id';
+    
+    //PREPARE STMT
+     $stmt = $this->conn->prepare($query);
 
-  // Prepare Statement
-  $stmt = $this->conn->prepare($query);
+     //clean DATA
+     $this->author = htmlspecialchars(strip_tags($this->author));
+     $this->id = htmlspecialchars(strip_tags($this->id));
+    
+     //Bind data
+     $stmt->bindParam(':author', $this->author);
+     $stmt->bindParam(':id', $this->id);
 
-  // Clean data
-  $this->author = htmlspecialchars(strip_tags($this->author));
-  $this->id = htmlspecialchars(strip_tags($this->id));
+     //Execute query
+     if($stmt->execute()){
+        return true;
+     }
 
-  // Bind data
-  $stmt-> bindParam(':author', $this->author);
-  $stmt-> bindParam(':id', $this->id);
+     //print error if something goes wrong
+     printf("Error: %s.\n", $stmt->error);
 
-  // Execute query
-  if($stmt->execute()) {
-    return true;
-  }
+     return false;
 
-  // Print error if something goes wrong
-  printf("Error: $s.\n", $stmt->error);
+}
 
-  return false;
-  }
-
-  // Delete Author
-  public function delete() {
+//Delete post
+public function delete(){
     // Create query
-    $query = 'DELETE FROM authors WHERE id = :id';
+    $query = 'DELETE FROM ' . $this->table . ' WHERE id = :id';
 
-    // Prepare Statement
+    //prepare statement
     $stmt = $this->conn->prepare($query);
 
-    // clean data
+    //clean data
     $this->id = htmlspecialchars(strip_tags($this->id));
 
-    // Bind Data
-    $stmt-> bindParam(':id', $this->id);
+    //bind data
+    $stmt->bindParam(':id', $this->id);
 
-    // Execute query
-    if($stmt->execute()) {
-      return true;
-    }
+    //Execute query
+    if($stmt->execute()){
+        return true;
+     } else {
 
-    // Print error if something goes wrong
-    printf("Error: $s.\n", $stmt->error);
+     //print error if something goes wrong
+     printf("Error: %s.\n", $stmt->error);
 
-    return false;
-    }
-  }
+     return false;
+     }
+}
+}
