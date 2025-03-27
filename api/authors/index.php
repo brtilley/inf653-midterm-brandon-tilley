@@ -1,9 +1,10 @@
 <?php
+
+    // Headers
     header('Access-Control-Allow-Origin: *');
     header('Content-Type: application/json');
     $method = $_SERVER['REQUEST_METHOD'];
     $uri = $_SERVER['REQUEST_URI'];
-
 
     if ($method === 'OPTIONS') {
         header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
@@ -11,11 +12,11 @@
         exit();
     }
 
-    // If statement for type of request
-
+    // If statement to use the correct method and file
     if ($method === 'GET') 
     {
-       try {
+       try 
+       {
            if (isset($_GET['id']) )
            require_once 'read_single.php' ;
           else
@@ -29,8 +30,9 @@
        }
     }
     else if ($method === 'POST') {
-       try {
-           require_once 'create.php';
+       try 
+       {
+       require_once 'create.php';
 
        }
        catch(ErrorException $e)
@@ -63,3 +65,4 @@
     }
     else
        echo ("No function requested");
+?>

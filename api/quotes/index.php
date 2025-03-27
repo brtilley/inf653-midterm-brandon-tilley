@@ -1,65 +1,65 @@
 <?php
+
+    // Headers
     header('Access-Control-Allow-Origin: *');
     header('Content-Type: application/json');
     $method = $_SERVER['REQUEST_METHOD'];
     $uri = $_SERVER['REQUEST_URI'];
-
-                
+            
     if ($method === 'OPTIONS') {
-        header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
-        header('Access-Control-Allow-Headers: Origin, Accept, Content-Type, X-Requested-With');
-        exit();
+    header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
+    header('Access-Control-Allow-Headers: Origin, Accept, Content-Type, X-Requested-With');
+    exit();
     }
 
-    // If statement for type of request
-    if ($method === 'GET') {
-        try {
-            if (isset($_GET['id']) )
-            require_once 'read_single.php' ;
-           else
-            require_once 'read.php';
-
-        }
-        catch(ErrorException $e)
+    // If statement to use the correct method and file
+    if ($method === 'GET') 
         {
-            echo("Required file not found!");
-        
-        }
-     }
-     else if ($method === 'POST') {
-        try {
-            require_once 'create.php';
-
-        }
+        try 
+            {
+                if(isset($_GET['id']))
+                require_once 'read_single.php';
+                else
+                require_once 'read.php';
+            }
         catch(ErrorException $e)
+            {
+                echo("Required file not found!");
+            }
+        }
+    else if ($method === 'POST') 
         {
-            echo("Required file not found!");
-        
+            try 
+                {
+                    require_once 'create.php';
+                }
+            catch(ErrorException $e)
+                {
+                    echo("Required file not found!");       
+                }
         }
-     }
-     else if ($method === 'PUT') {
-        try {
-            require_once 'update.php';
-
-        }
-        catch(ErrorException $e)
+    else if ($method === 'PUT') 
         {
-            echo("Required file not found!");
-        
+            try 
+                {
+                    require_once 'update.php';
+                }
+            catch(ErrorException $e)
+                {
+                    echo("Required file not found!");
+                }
         }
-     }
-     else if ($method === 'DELETE') {
-        try {
-            require_once 'delete.php';
-
-        }
-        catch(ErrorException $e)
+    else if ($method === 'DELETE') 
         {
-            echo("Required file not found!");
-        
+            try 
+                {
+                    require_once 'delete.php';
+                }
+            catch(ErrorException $e)
+                {
+                    echo("Required file not found!");
+                }
         }
-     }
-     else
-        echo ("No function requested");
-
+    else
+    echo ("No function requested");
 ?>

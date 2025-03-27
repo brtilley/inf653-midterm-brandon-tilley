@@ -8,24 +8,24 @@
 
   include_once '../../config/Database.php';
   include_once '../../models/Author.php';
-  // Instantiate DB & connect
+  
+  // Database connection
   $database = new Database();
   $db = $database->connect();
 
-  //Instantiate blog quote object
   $aut = new Author($db);
 
-  //Get the raw posted data
+  //Retrieve the raw data
   $data = json_decode(file_get_contents("php://input"));
 
-  //if data is not all set, send error message and exit
-  if ( !isset($data->author) )
-  {
+  //If missing required parameters, send error message
+  if(!isset($data->author))
+      {
       echo json_encode(array('message' => 'Missing Required Parameters'));
       exit();
-  } else {
-      $aut->author = $data->author;
-      $aut->create();
-      echo json_encode(array('id' => $db->lastInsertId(), 'author'=>$aut->author));
-
-  }
+      } else {
+            $aut->author = $data->author;
+            $aut->create();
+            echo json_encode(array('id' => $db->lastInsertId(), 'author'=>$aut->author));
+             }
+?>

@@ -1,17 +1,17 @@
 <?php 
-  // Headers
 
-  header('Access-Control-Allow-Origin: *');
-  header('Content-Type: application/json');
-  header('Access-Control-Allow-Methods: PUT');
-  header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
+    // Headers
+    header('Access-Control-Allow-Origin: *');
+    header('Content-Type: application/json');
+    header('Access-Control-Allow-Methods: PUT');
+    header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
-  include_once '../../config/Database.php';
-  include_once '../../models/Quote.php';
+    include_once '../../config/Database.php';
+    include_once '../../models/Quote.php';
 
-  // Instantiate DB & connect
-  $database = new Database();
-  $db = $database->connect();
+    // Database connection
+    $database = new Database();
+    $db = $database->connect();
 
     //Instantiate blog quote object
     $quo = new Quote($db);
@@ -20,10 +20,12 @@
     $data = json_decode(file_get_contents("php://input"));
 
     //data is not set
-    if(!isset($data->id) || !isset($data->quote) || !isset($data->author_id) || !isset($data->category_id)){
-        echo json_encode(array('message' => 'Missing Required Parameters'));
-        exit();
-    }
+    if(!isset($data->id) || !isset($data->quote) || !isset($data->author_id) || !isset($data->category_id))
+        {
+            echo json_encode(array('message' => 'Missing Required Parameters'));
+            exit();
+        }
+        
     //SET ID TO UPDATE
     $quo->id = $data->id;
     $quo->quote = $data->quote;
@@ -37,33 +39,38 @@
 
     //conduct checks on category and author ids
     $cat->read_single();
-    if(!$cat->category){
-        echo json_encode(array(
+    if(!$cat->category)
+        {
+            echo json_encode(array(
             'message' => 'category_id Not Found'
-        ));
-        exit();
-    }
+            ));
+            exit();
+        }
 
     $aut->read_single();
-    if(!$aut->author){
-        echo json_encode(array(
+    if(!$aut->author)
+        {
+            echo json_encode(array(
             'message' => 'author_id Not Found'
-        ));
-        exit();
-    }
+            ));
+            exit();
+        }
 
     //update quotes
-    if($quo->update()){
-        echo json_encode(
+    if($quo->update())
+        {
+            echo json_encode(
             array(
                 'id' => $quo->id,
                 'quote' => $quo->quote,
                 'author_id' => $quo->author_id,
                 'category_id' => $quo->category_id
-        ));
-    } else {
-        echo json_encode(
-            array(
+            ));
+        } else 
+            {
+                echo json_encode(
+                array(
                 'message' => 'No Quotes Found'
-        ));
-    }
+                ));
+            }
+?>
