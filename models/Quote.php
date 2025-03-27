@@ -190,20 +190,21 @@
 
         //Execute the query
         if($stmt->execute()){
-        if ($stmt->rowCount()==0)
-            {
+            if ($stmt->rowCount()==0){
                 return false;
-            } else
-                {
-                    return true;
-                } else 
-                    {
+            }
+            else{
+                return true;
+            }
+         } else {
 
-                        // Return an error in there is a problem
-                        printf("Error: %s.\n", $stmt->error);
-                        return false;
-                    }
+        // Return an error in there is a problem
+        printf("Error: %s.\n", $stmt->error);
+
+         return false;
+
         }
+    }
 
     //Delete post
     public function delete()
